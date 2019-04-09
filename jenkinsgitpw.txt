@@ -1,0 +1,7 @@
+Jenkins:
+admin
+b55e14b7806b4b58b1cf03c3a155ed3d
+
+Git:
+Abilashsofy
+sofyabi
