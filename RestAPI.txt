@@ -1,0 +1,176 @@
+Week 3:
+
+Postman:
+UN: abilash2011@gmail.com
+PW: sofyabi@123
+
+ServiceNow:
+abilash2011@gmail.com
+Sofyabi@12345
+
+Instance:
+https://dev38211.service-now.com
+admin/Tuna@123
+
+JIRA:
+https://abilash.atlassian.net/
+abilash2011@gmail.com/sofyabi@123
+
+Postman fields:
+
+Request: Choose GET or POST or PUT etc
+
+Header: Should have URL with URI. This will change according to the documentation.
+
+Example: https://dev38211.service-now.com/api/now/table/incident
+URL:https://dev38211.service-now.com
+URI:/api/now/table/incident. this is nothing but the resource
+
+Params: to filter the desired fields. 
+
+Example: Key: type and Value: Emergency. this will show only type with value emergency in the response.
+According to the document, we can filter more than on Key also. Eg: Key: sysparam_fields and value: type, state, number
+
+Authorization:
+
+Basic: provide basic Credential to access the API
+OAuth2.0: get the token by providing necessary information like callback URL, Auth URL etc given in the documentation
+Inherit Auth from parent: Use Authentication mentioned in the collection
+
+Header: we need to mention Key and value in order to structurize the Header 
+Example: content-Type - application/json. accept - application/json
+
+Body: this part will be used for Delete, Post and Put. Here we need to mention the Json pass the data for modification
+
+Body -> form-data -> for attaching files
+
+Tests: to manipulate the date once the response is received.
+
+Example: if we have run the GET method and response is received  then we can write JS script to fetch necessary data
+
+1. write a code to get response
+2. from res, get sysid
+3. set in global variable using defalut method available
+
+//write a code to get the response as Json
+
+
+
+var json = pm.response.json();
+
+console.log("My Expected result");
+
+console.log(json);
+
+
+
+//From the response, get the sys_id
+
+
+
+var id=json.result.sys_id;
+
+console.log("The sys id:"+id);
+
+
+
+//Set the sys_id in the global variable
+
+
+
+pm.globals.set("sys_id", "id");
+
+
+Week 3/Day2:
+
+1. Variables: 
+2. Chaining
+3. Javascripts Basics
+4. Collection Runner
+5. NewMan -A command Line runner
+6. Integration of PostMan with Jenkins
+
+Variables:
+
+it can be declared under 
+
+Global, Collection, Environment
+
+- Naming variable globally under settings -> {{resources}}
+- Bad design is giving same name for variables in all types
+
+if you want to pass the value only to the method under collection then provide value under collection or give it globally under Settings->Globals
+and we can sprcify environment also and can see the specified values in the Drop-down at top right
+
+While assigning values to variable, the variable name should be unique and must have initial and current value
+
+- can see the passed variable value in console from developer 
+
+Chaining:
+
+Pass Response data to another Req:
+
+Global or collection will help to achieve
+
+Global - Runtime change/fetch(set/get). Best way to achieve is using variables globally as it can set new value and can get value from variables
+where as collection - you cannot change/fetch
+
+Tests: to fetch values after script is run
+
+
+1. write a code to get response
+2. from res, get sysid
+3. set in global variable using defalut method available
+
+//write a code to get the response as Json
+
+var json = pm.response.json();
+console.log("My Expected result");
+
+console.log(json);
+
+
+
+//From the response, get the sys_id
+
+
+var id=json.result.sys_id;
+
+console.log("The sys id:"+id);
+
+
+
+//Set the sys_id in the global variable
+
+Structure of JSON
+
+json.result[0].requested_by.value;
+
+Runner: it is used to run the collection sequentially
+
+New Man: Command Line runner
+
+Runs on nodsJS- server library. So we need to install nodeJS and new man package 
+
+npm install newman
+newman -v --> if it does not show the version then force start again using -g command
+
+Commands: to run through command prompt
+
+newman run -h
+newman run <path of json> -g <json of global variable> -e<json of environmant variables if exists> -n -1
+
+Through jenkins
+
+Build Trigger:
+
+45 12 * * 7
+
+Build: select option to run through command prompt and provied following command
+
+command:
+
+newman run C:\Users\user\Desktop\newman\Dev.postman_collection.json
+
+pm.globals.set("sys_id", "id");
+

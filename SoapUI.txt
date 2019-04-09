@@ -1,0 +1,344 @@
+API Basics:
+
+API:
+
+-> Discovering bug at early stage
+-> Stopping Critical bugs
+-> Fast Release
+-> Data Availability
+-> Data Reliability
+---------------------
+
+Resides in the message layer
+NO GUI
+Unit and Load testing can be done
+----------------------
+
+API Call Collector:
+
+HTTP Header
+
+Automatization
+Response Time
+
+HTTP request:
+
+GET
+POST
+PUT
+DETELE
+CONNECT
+HEAD
+--------------------------
+
+HTTP Status code:
+
+200: ok
+201: created
+403: Forbidden error. Server is refusing the connection
+404: page not found
+400: Bad request. Sever will not process the request
+500: Internal Server error
+504: Gateway timeout. Server acting a proxy and did not receive anything from upstream server
+
+SOAP: Simple Object Access Protocol
+REST: REpresentational State Transfer
+----------------------------
+What kind of bugs expected?
+
+1. Response time
+2. incorrect Response
+3. Modules integration issue
+4. Wrong Status code
+5. Request is not working
+----------------------------
+
+Day1:
+
+Salesforce Security Token:
+
+Username: abilash2011@gmail.com
+Security token (case-sensitive): 1LXJEypBAt2mPEUq9OX3OYrc
+
+URL/Location for WSDL files:
+
+1. Countryinfo webservices: http://webservices.oorsprong.org/websamples.countryinfo/CountryInfoService.wso?WSDL
+2. Calculator webservices http://www.dneonline.com/calculator.asmx?WSDL
+3. Salesforce: https://drive.google.com/file/d/1jQ9HWhgZzLciVVTGooohqEzIPhu9XvKU/view
+
+WHY WE NEED WEBSERVICES:
+
+1. Swift Left
+2. Maintaining data
+3. Its a mediator
+4. going for API as we cant connect to all DB
+5. Each API is acting as a services
+
+What is Soap UI?: Simple Object Access Protocol
+
+It is one of type of the webservice which will always use XML format to send the request to the provider server
+Diff with REST API is rest can send request using many formats like PDF, JSON, text, xml also etc
+Soap can send SOAP and REST also to the server
+
+
+What is WSDL:: Web Services Description Language 
+WSDL:
+it is an i/p for SOAP
+It is also in XML format
+Provider system will expose the WSDL file to the consumer system
+WSDL is only needed for SOAP
+
+Tips:
+
+->We will get SOAP fault error if we have pblm in WSDL
+-> No custom property can be created at Test step level
+->Test runner: it is class can hold the reference of the Test Step
+
+
+Exer:
+
+1.Run Add and Multiply
+
+FW:
+
+Under a project->Test Suite can be created -> Test cases can be created -> Test steps can be created (Add the request here) -> Created assertion as Not a SOAP fault and HTTP status code and response SLA -> get the value from test suite
+
+GROOVY SCRIPTS:
+
+addrun=testRunner.testCase.testSteps["Addition"]
+addrun.run(testRunner,context)
+
+To get all the TCS
+
+adddiff=testRunner.testCase.testSuite.testCases["TC3"]
+
+To get all the TSs
+
+testRunner.testCase.testSuite.project.testSuites[].testCases[].testSteps
+
+To get all the projs
+
+testRunner.testCase.testSuite.workspace.projects.testSuites[].testCases[].testSteps
+
+SETTING VALUES USING PROPERTIES:
+
+context.setProperty("IntA", 20) -> it helps to set the property value from Groovy and can be passed as part of the SOAP request
+
+SETTING VALUES GLOBALLY THROUGH GROOVY:
+
+com.eviware.soapui.SoapUI.globalProperties.setPropertyValue("SSID",sessiondd)
+
+com.eviware.soapui.SoapUI.globalProperties.setPropertyValue("SERID",serverdd)
+
+USE XML HOLDER AND GETTING NODE VALUES
+
+what is xml holder: it is used to hold the responses of the test step which is expanded using expand method of wsdlTestRunContext
+
+loginrun=testRunner.testCase.testSuite.testCases["TestCase 1"].testSteps["Login"]
+loginrun.run(testRunner,context)
+
+// caputring the response from login test step, Method :expand
+
+
+differcontext = new WsdlTestRunContext(loginrun)
+Response = differcontext.expand('${Login#response}')
+
+holdxml = new XmlHolder(Response)
+//getNode value from Xmlholder -eg : Holdxm - sessioniddd,serverurl
+
+sessiondd=holdxml.getNodeValue("//*:sessionId")
+serverdd=holdxml.getNodeValue("//*:serverUrl")
+
+
+EXCECISE:
+
+->run the test step from Groovy
+->have tw0 test suites and run the test step of TS2 from TS1 - Grrovy
+
+To pass data ${#TestCase#IntA}
+
+What is property transfer?
+
+1. Getting value from Response: xpath: //*:AddResult
+2. verify a particular tag is appearing exists(//*:AddResult)
+3. Verify the count count(//*:AddResult)
+4. Property transfer: 
+
+To capture the dynamic values from server response and passing into the other request
+
+Example:
+Log in and get the session from the server
+and rest of the script will use the session id afterh the PT
+
+
+Agenda:
+
+PT using Groovy
+DDriven using CSV
+Mock Services using SoapUI
+how to run TS using WSDL test run context
+
+
+Home work:
+
+1.Learn about BufferReader, FR classes
+2.Learn about XmlHolder Class
+3. Run the complete test case from Groovy
+
+Day2:
+
+C:\Users\user\default-soapui-workspace.xml
+
+
+1. Read the iso code from csv
+2. Firtline should be col header and skipped
+3. Pass the values to capital city XML and run them from Groovy
+
+Exercise:
+
+1. Pass two column values using CSV
+2. learn about message exchange class
+3. JSON slurper 
+
+HOW TO PASS VALUES FROM CSV USING FILE REDER AND BUFFER REDER?
+
+File reader: it is used to read the file
+Buffer reader:it is used to read line by line
+
+FileRead = new BufferedReader(new FileReader("C:\\Users\\user\\Desktop\\capital.csv"))
+
+FirstLine = FileRead.readLine()
+
+
+while(FirstLine!=null)
+{
+	log.info FirstLine
+	context.setProperty("sCountryISOCode",FirstLine)
+	capitalrun=testRunner.testCase.testSteps["Capital"]
+	capitalrun.run(testRunner,context)
+	FirstLine=FileRead.readLine()
+}
+
+Day 3:
+
+GetIncident:
+GET https://instance.service-now.com/api/now/v1/table/incident
+
+
+
+Read the Inserted Incident:
+GET https://instance.service-now.com/api/now/v1/table/incident/{sys_id}
+
+
+
+PostIncident:
+
+
+POST https://instance.service-now.com/api/now/v1/table/incident
+
+
+{"short_description":"Test incident creation through REST", "comments":"These are my comments"}
+
+
+
+Update the Incident:
+PUT https://instance.service-now.com/api/now/v1/table/incident/{sys_id}?sysparm_exclude_ref_link=true
+
+
+
+DELETE https://instance.service-now.com/api/now/v1/table/incident/{sys_id}
+
+
+Service Now:
+
+abilash2011@gmail.com
+Sofyabi@123
+
+---
+
+Instance
+
+Username: admin
+Password: dbUpm4xSJHL9
+
+URL
+https://dev65828.service-now.com/
+
+REST:
+
+For Rest API, URI is the i/p followed by the post content can be JSON
+
+1. GET: get the information from the server
+2. POST: Save the information in the server. can be used for update also i.e PUT
+3. PUT: Modify the information
+4. DELETE: Deletes the information
+
+EX:
+
+1. Create TS, TC, Test Steps
+2. Under TS, pull get all incidents and get incident by sys_id
+3. Create property transfer
+4. Run get all incident and get incident by sys_id through groovy script
+
+EX:
+
+import groovy.Json.JsonSlurper
+
+/Get the json response
+postresponse = messageExchange.response.responseContent
+//save the response in json format
+parsejson = new JsonSlurper().parseText(postresponse)
+log.info parsejson
+//Pull the value from the json path
+sysclassname = parsejson.result.sys_class_name
+//category
+log.info sysclassname
+//assert the expected value
+assert (sysclassname=="incident")
+
+Run from Suite:in combination
+
+Create 3 Tcs and 1 more for Groovy and run in various combinations. False, true, true. true, true, false etc
+
+def project1 = testRunner.testCase.testSuite.project
+TC1=project1.testSuites["ServiceNowSuite1"].testCases["ServiceNowTC1"]
+TC1.run(null,false)
+
+def project2 = testRunner.testCase.testSuite.project
+TC2=project2.testSuites["ServiceNowSuite1"].testCases["ServiceNowTC2"]
+TC2.run(null,true)
+
+def project3 = testRunner.testCase.testSuite.project
+TC2=project3.testSuites["ServiceNowSuite1"].testCases["ServiceNowTC3"]
+TC2.run(null,true)
+
+Run complete suite:
+
+1. Create Groovy in another Suite and run
+
+def project1 = testRunner.testCase.testSuite.project
+TC1=project1.testSuites["ServiceNowSuite1"]
+TC1.run(null,false)
+
+Day 4:
+
+Agenda:
+1. Test status
+2. How to create folders, files using java
+3. How to get the assertion results in SoapUI - imp
+4. How to get Request and response 
+5. How to teardown scripts work for each testcase
+6. How to set up authentication for entire testcase or proj level - imp
+
+1. How significant running performance testing on JMeter
+2. How to do performance testing using webservices
+
+Project work:
+
+From Soap and Rest, utilise mock, how to produce test results to stake holders
+
+
+
+
+
+
