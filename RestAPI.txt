@@ -174,3 +174,25 @@ newman run C:\Users\user\Desktop\newman\Dev.postman_collection.json
 
 pm.globals.set("sys_id", "id");
 
+
+Week4:
+
+POstman drawback:
+
+1. Debugging
+2. Reports
+3. Multiple Data
+4. Parallel Execution
+5. Dependancy
+6. Single Unified Framework
+
+RestAssured:
+
+Karate is popular like Rest Assured. It is for BDD
+Where as RestAssured is stable and java framework
+Non automation engineer can work easily
+It is written in Groovy. Java calls internally Groovy
+
+http://repo1.maven.org/maven2/io/rest-assured/rest-assured/
+
+

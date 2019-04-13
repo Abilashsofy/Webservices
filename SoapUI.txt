@@ -62,6 +62,8 @@ Security token (case-sensitive): 1LXJEypBAt2mPEUq9OX3OYrc
 
 URL/Location for WSDL files:
 
+Project->Add Wsdl
+
 1. Countryinfo webservices: http://webservices.oorsprong.org/websamples.countryinfo/CountryInfoService.wso?WSDL
 2. Calculator webservices http://www.dneonline.com/calculator.asmx?WSDL
 3. Salesforce: https://drive.google.com/file/d/1jQ9HWhgZzLciVVTGooohqEzIPhu9XvKU/view
@@ -94,6 +96,12 @@ Tips:
 -> No custom property can be created at Test step level
 ->Test runner: it is class can hold the reference of the Test Step
 
+How to get data?
+
+1. Globally via TestSuite level, Project level, Testcase level. Click on respective level and add values in the bottom area
+2. Add Property transfer as step, select which xpath u need to pass, create variable to hold data for req 2 from req1
+3. Can be sent via Groovy script
+4. can be sent via CSV
 
 Exer:
 
